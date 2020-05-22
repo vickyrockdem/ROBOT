@@ -1,0 +1,36 @@
+{
+    "manifestVersion": 1,
+    "id": "efb48c00-9d32-4a06-b902-3c9e974abda7tsc",
+    "name": "RobotFramework",
+    "version": "1.0.5",
+    "publisher": "VIK",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Run Robot framework tests cases from Task",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"        
+    },
+    "files": [
+        {
+            "path": "buildAndReleaseTask"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "efb48c00-9d32-4a06-b902-3c9e974abda7tsc",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "buildAndReleaseTask"
+            }
+        }
+    ]
+}
