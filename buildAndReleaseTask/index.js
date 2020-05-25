@@ -42,21 +42,24 @@ var request = require("request");
 //This is the function whaich needs to be executed
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var TestcasePath, TestCaseName, exec;
+        var TestcasePath, TestCaseName;
         return __generator(this, function (_a) {
             try {
                 TestcasePath = tl.getInput("Test Case Path", true);
                 TestCaseName = tl.getInput("Test Case Name", true);
+                details(TestcasePath, TestCaseName);
             }
             catch (err) {
                 console.log("error in input");
             }
-            console.log("calling clild_process");
-            exec = require('child_process').exec;
-            exec('robot  Test case Path ', { 'shell': 'powershell.exe' }, function (error, stdout, stderr) {
-                run();
-            });
             return [2 /*return*/];
         });
+    });
+}
+run();
+function details(TestcasePath, TestCaseName) {
+    console.log("calling clild_process");
+    var exec = require('child_process').exec;
+    exec('robot -t ' + ' ' + TestcasePath, { 'shell': 'powershell.exe' }, function (error, stdout, stderr) {
     });
 }

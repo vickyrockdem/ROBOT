@@ -23,7 +23,7 @@ async function run() {
       run();
 
         function details(
-        TestPath: string | undefined,
+        TestcasePath: string | undefined,
         TestCaseName: string | undefined
       )
         
@@ -31,13 +31,12 @@ async function run() {
           console.log ("calling clild_process");
 
         const { exec } = require('child_process');
-        exec( 'robot -t  Test case Path ', 
+        exec( 'robot -t ' + ' ' + TestcasePath, 
         {'shell':'powershell.exe'}, (error: any, stdout: any, stderr: any)=>{
         
         
        })
     }
-
 
 
      
