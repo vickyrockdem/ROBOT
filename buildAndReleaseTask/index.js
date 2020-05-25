@@ -42,24 +42,41 @@ var request = require("request");
 //This is the function whaich needs to be executed
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var TestcasePath, TestCaseName;
+        var TestcasePath, RunIndividualTestCase, TestCaseName, err_1, output, sliced;
         return __generator(this, function (_a) {
-            try {
-                TestcasePath = tl.getInput("Test Case Path", true);
-                TestCaseName = tl.getInput("Test Case Name", true);
-                details(TestcasePath, TestCaseName);
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    TestcasePath = tl.getInput("TestCasePath", true);
+                    RunIndividualTestCase = tl.getInput("RunIndividualTestCase", false);
+                    TestCaseName = tl.getInput("TestCaseName", true);
+                    return [4 /*yield*/, details({ TestCasePath: TestcasePath, RunIndividualTestCase: RunIndividualTestCase, TestCaseName: TestCaseName })];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, details({ TestCasePath: TestcasePath, RunIndividualTestCase: RunIndividualTestCase, TestCaseName: TestCaseName })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.log("error in input");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
-            catch (err) {
-                console.log("error in input");
-            }
-            return [2 /*return*/];
         });
     });
 }
 run();
-function details(TestcasePath, TestCaseName) {
-    console.log("calling clild_process");
-    var exec = require('child_process').exec;
-    exec('robot -t ' + ' ' + TestcasePath, { 'shell': 'powershell.exe' }, function (error, stdout, stderr) {
+function details(_a) {
+    var TestCasePath = _a.TestCasePath, RunIndividualTestCase = _a.RunIndividualTestCase, TestCaseName = _a.TestCaseName;
+    return __awaiter(this, void 0, void 0, function () {
+        var exec;
+        return __generator(this, function (_b) {
+            console.log("calling clild_process");
+            exec = require('child_process').exec;
+            exec('robot -t ' + ' ' + TestCasePath, { 'shell': 'powershell.exe' }, function (error, stdout, stderr) {
+            });
+            return [2 /*return*/];
+        });
     });
 }
