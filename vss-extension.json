@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "efb48c00-9d32-4a06-b902-3c9e974abda7tsc",
     "name": "RobotFramework",
-    "version": "1.0.25",
+    "version": "1.0.28",
     "publisher": "VIK",
     "targets": [
         {

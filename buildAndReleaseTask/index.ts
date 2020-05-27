@@ -7,33 +7,29 @@ var request = require("request");
 
 async function run() {
     try {
-      //Getting inputs from the users
-      const TestcasePath: string | undefined = tl.getInput("testpath", true);
-      if (TestcasePath == 'bad') {
-        tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
-        return;
-    }
-      const TestCaseName: string | undefined = tl.getInput("TestcaseName", false);
-      const RunIndividualTC: Boolean | undefined = tl.getBoolInput("RunIndividualTestCase",false)
-      console.log("Testing this if it works.");
+          //Getting inputs from the users
+          const TestcasePath: string | undefined = tl.getInput("testpath", true);
+            if (TestcasePath == 'bad') {
+                tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
+                return;
+            }  
+          const TestCaseName: string | undefined = tl.getInput("TestcaseName", false);
+          const RunIndividualTC: Boolean | undefined = tl.getBoolInput("RunIndividualTestCase",false)
+          console.log("Testing this if it works.");
       
-      if (RunIndividualTC == true)
-      {
-        RunIndividualTestCase(TestcasePath,TestCaseName);
-        console.log("Selected to run individual test case");
-      }
-      else {
-        console.log("selected to run all test cases");
-        RunAllTestCases(TestcasePath);
-      }
-       //details(TestcasePath, TestCaseName);
-       
-      
-     } 
-        catch (err) {
-          tl.setResult(tl.TaskResult.Failed, err.message);
-        
-    }
+          if (RunIndividualTC == true)
+          {
+              RunIndividualTestCase(TestcasePath,TestCaseName);
+              console.log("Selected to run individual test case");
+          }
+          else {
+              console.log("selected to run all test cases");
+              RunAllTestCases(TestcasePath);
+          }
+
+        } catch (err) {
+            tl.setResult(tl.TaskResult.Failed, err.message);   
+          }
 
 }
 
@@ -45,14 +41,15 @@ function RunAllTestCases(
 {
   console.log ("Running all test cases in path " + TestPath);
   const { exec } = require('child_process')
-  exec( 'robot' + ' ' + TestPath, 
+  exec( 'robot' + ' --pythonpath .' + ' ' + TestPath, 
     (error: any, stdout: any, stderr: any)=>{
       if(error) {
+        console.error(`Error: ${stderr}`);
         tl.setResult(tl.TaskResult.Failed,error);
         return;
       }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
+      console.log(`${stdout}`);
+
     })
 }
 
@@ -65,3 +62,9 @@ function RunIndividualTestCase(
   //const { exec } = require('child_process')
   //exec('robot')
 }
+
+
+
+     
+
+

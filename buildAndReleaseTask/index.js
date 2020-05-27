@@ -42,27 +42,48 @@ var request = require("request");
 //This is the function whaich needs to be executed
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var TestcasePath, TestCaseName;
+        var TestcasePath, TestCaseName, RunIndividualTC;
         return __generator(this, function (_a) {
             try {
-                TestcasePath = tl.getInput("Test Case Path", true);
-                TestCaseName = tl.getInput("Test Case Name", true);
-                //details(TestcasePath, TestCaseName);
-                details(TestcasePath);
+                TestcasePath = tl.getInput("testpath", true);
+                if (TestcasePath == 'bad') {
+                    tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
+                    return [2 /*return*/];
+                }
+                TestCaseName = tl.getInput("TestcaseName", false);
+                RunIndividualTC = tl.getBoolInput("RunIndividualTestCase", false);
+                console.log("Testing this if it works.");
+                if (RunIndividualTC == true) {
+                    RunIndividualTestCase(TestcasePath, TestCaseName);
+                    console.log("Selected to run individual test case");
+                }
+                else {
+                    console.log("selected to run all test cases");
+                    RunAllTestCases(TestcasePath);
+                }
             }
             catch (err) {
-                console.log("error in input");
+                tl.setResult(tl.TaskResult.Failed, err.message);
             }
             return [2 /*return*/];
         });
     });
 }
 run();
-function details(TestPath
-//TestCaseName: string | undefined
-) {
-    console.log("calling clild_process");
+function RunAllTestCases(TestPath) {
+    console.log("Running all test cases in path " + TestPath);
     var exec = require('child_process').exec;
-    exec('robot  ' + ' ' + TestPath, { 'shell': 'powershell.exe' }, function (error, stdout, stderr) {
+    exec('robot' + ' --pythonpath .' + ' ' + TestPath, function (error, stdout, stderr) {
+        if (error) {
+            console.error("Error: " + stderr);
+            tl.setResult(tl.TaskResult.Failed, error);
+            return;
+        }
+        console.log("" + stdout);
     });
+}
+function RunIndividualTestCase(TestPath, TestCaseName) {
+    console.log("Run Individual Test Case");
+    //const { exec } = require('child_process')
+    //exec('robot')
 }
