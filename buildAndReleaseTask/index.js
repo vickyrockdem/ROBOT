@@ -54,7 +54,7 @@ function run() {
                 RunIndividualTC = tl.getBoolInput("RunIndividualTestCase", false);
                 console.log("Testing this if it works.");
                 if (RunIndividualTC == true) {
-                    RunIndividualTestCase(TestcasePath, TestCaseName);
+                    RunIndividualTestCase(TestCaseName, TestcasePath);
                     console.log("Selected to run individual test case");
                 }
                 else {
@@ -74,16 +74,23 @@ function RunAllTestCases(TestPath) {
     console.log("Running all test cases in path " + TestPath);
     var exec = require('child_process').exec;
     exec('robot' + ' --pythonpath .' + ' ' + TestPath, function (error, stdout, stderr) {
-        if (error) {
-            console.error("Error: " + stderr);
-            tl.setResult(tl.TaskResult.Failed, error);
-            return;
-        }
+        /*if(error) {
+          console.error(`Error: ${stderr}`);
+          tl.setResult(tl.TaskResult.Failed,error);
+          return;
+        }*/
         console.log("" + stdout);
     });
 }
-function RunIndividualTestCase(TestPath, TestCaseName) {
-    console.log("Run Individual Test Case");
-    //const { exec } = require('child_process')
-    //exec('robot')
+function RunIndividualTestCase(TestCaseName, TestPath) {
+    console.log("Run Individual Test Cases" + ' ' + TestCaseName);
+    var exec = require('child_process').exec;
+    exec('robot -t' + ' ' + TestCaseName + ' ' + TestPath, function (error, stdout, stderr) {
+        /*if(error) {
+          console.error(`Error: ${stderr}`);
+          tl.setResult(tl.TaskResult.Failed,error);
+          return;
+        }*/
+        console.log("" + stdout);
+    });
 }

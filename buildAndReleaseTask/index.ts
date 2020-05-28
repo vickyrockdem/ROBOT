@@ -13,13 +13,13 @@ async function run() {
                 tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
                 return;
             }  
-          const TestCaseName: string | undefined = tl.getInput("TestcaseName", false);
+          const TestCaseName: string | undefined = tl.getInput("TestcaseName", false); 
           const RunIndividualTC: Boolean | undefined = tl.getBoolInput("RunIndividualTestCase",false)
           console.log("Testing this if it works.");
       
           if (RunIndividualTC == true)
           {
-              RunIndividualTestCase(TestcasePath,TestCaseName);
+              RunIndividualTestCase(TestCaseName,TestcasePath);
               console.log("Selected to run individual test case");
           }
           else {
@@ -43,26 +43,35 @@ function RunAllTestCases(
   const { exec } = require('child_process')
   exec( 'robot' + ' --pythonpath .' + ' ' + TestPath, 
     (error: any, stdout: any, stderr: any)=>{
-      if(error) {
+      /*if(error) {
         console.error(`Error: ${stderr}`);
         tl.setResult(tl.TaskResult.Failed,error);
         return;
-      }
+      }*/
       console.log(`${stdout}`);
 
     })
 }
 
-function RunIndividualTestCase(
-          TestPath: String | undefined,
-          TestCaseName: string | undefined
+function RunIndividualTestCase( 
+          TestCaseName: string | undefined,      
+          TestPath: String | undefined
+          
 )      
 {
-  console.log ("Run Individual Test Case");
-  //const { exec } = require('child_process')
-  //exec('robot')
-}
+  console.log ("Run Individual Test Cases" + ' ' + TestCaseName);
+  const { exec } = require('child_process')
+  exec('robot -t' + ' '  + TestCaseName + ' ' +  TestPath,
+  (error: any, stdout: any, stderr: any)=>{
+    if(error) {
+      console.error(`Error: ${stderr}`);
+      tl.setResult(tl.TaskResult.Failed,error);
+      return;
+    }
 
+    console.log(`${stdout}`);
+}  )
+}
 
 
      
