@@ -3,6 +3,8 @@
 import tl = require('azure-pipelines-task-lib/task');
 var request = require("request");
 
+
+
 //This is the function whaich needs to be executed
 
 async function run() {
@@ -23,7 +25,7 @@ async function run() {
               console.log("Selected to run individual test case");
           }
           else {
-              console.log("selected to run all test cases");
+              console.log("selected to run all test cases");	
               RunAllTestCases(TestcasePath);
           }
 
@@ -33,6 +35,8 @@ async function run() {
 
 }
 
+var dash: string;
+var sliced: string;
 run();
 
 function RunAllTestCases(
@@ -41,17 +45,21 @@ function RunAllTestCases(
 {
   console.log ("Running all test cases in path " + TestPath);
   const { exec } = require('child_process')
-  exec( 'robot' + ' --pythonpath .' + ' ' + TestPath, 
-    (error: any, stdout: any, stderr: any)=>{
+  var dash =exec( 'robot' + ' --pythonpath .' + ' ' + '-x outputxunit.xml' + TestPath,
+  (error: any, stdout: any, stderr: any)=>{
       /*if(error) {
         console.error(`Error: ${stderr}`);
         tl.setResult(tl.TaskResult.Failed,error);
         return;
-      }*/
-      console.log(`${stdout}`);
+      }
+      console.log(dash);
+  sliced = JSON.parse(JSON.stringify(dash)).output; TestPath
+          console.log(sliced);
+    console.log(`${stdout}`);
+      console.log(`${stdout}`);*/
 
     })
-}
+  }
 
 function RunIndividualTestCase( 
           TestCaseName: string | undefined,      
@@ -63,13 +71,16 @@ function RunIndividualTestCase(
   const { exec } = require('child_process')
   exec('robot -t' + ' '  + TestCaseName + ' ' +  TestPath,
   (error: any, stdout: any, stderr: any)=>{
-    if(error) {
+    /*if(error) {
       console.error(`Error: ${stderr}`);
       tl.setResult(tl.TaskResult.Failed,error);
-      return;
+      return;P
     }
-
+    console.log(dash);
+  sliced = JSON.parse(JSON.stringify(dash)).output; 
+          console.log(sliced);TestPath
     console.log(`${stdout}`);
+      console.log(`${stdout}`);*/
 }  )
 }
 

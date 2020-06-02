@@ -73,13 +73,12 @@ run();
 function RunAllTestCases(TestPath) {
     console.log("Running all test cases in path " + TestPath);
     var exec = require('child_process').exec;
-    exec('robot' + ' --pythonpath .' + ' ' + TestPath, function (error, stdout, stderr) {
-        /*if(error) {
-          console.error(`Error: ${stderr}`);
-          tl.setResult(tl.TaskResult.Failed,error);
-          return;
-        }*/
-        console.log("" + stdout);
+    exec('robot' + ' --pythonpath ' + ' ' + TestPath, function (error, stdout, stderr) {
+        if (error) {
+            console.error("Error: " + stderr);
+            tl.setResult(tl.TaskResult.Failed, error);
+            return;
+        }
     });
 }
 function RunIndividualTestCase(TestCaseName, TestPath) {
@@ -91,6 +90,5 @@ function RunIndividualTestCase(TestCaseName, TestPath) {
           tl.setResult(tl.TaskResult.Failed,error);
           return;
         }*/
-        console.log("" + stdout);
     });
 }
