@@ -41,6 +41,23 @@
             "required":false,
             "helpMarkDown": "A sample string"
 
+         },
+         {
+            "name": "username",
+            "type": "string",
+            "label": "Username",
+            "defaultValue": "",
+            "required":false,
+            "helpMarkDown": "A sample string"
+         },
+
+         {
+            "name": "password",
+            "type": "string",
+            "label": "password",
+            "defaultValue": "",
+            "required":false,
+            "helpMarkDown": "A sample string"
          }
     ],
     "execution": {

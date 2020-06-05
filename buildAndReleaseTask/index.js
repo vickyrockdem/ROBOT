@@ -9,86 +9,135 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var tl = require("azure-pipelines-task-lib/task");
+const tl = require("azure-pipelines-task-lib/task");
 var request = require("request");
 //This is the function whaich needs to be executed
 function run() {
-    return __awaiter(this, void 0, void 0, function () {
-        var TestcasePath, TestCaseName, RunIndividualTC;
-        return __generator(this, function (_a) {
-            try {
-                TestcasePath = tl.getInput("testpath", true);
-                if (TestcasePath == 'bad') {
-                    tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
-                    return [2 /*return*/];
-                }
-                TestCaseName = tl.getInput("TestcaseName", false);
-                RunIndividualTC = tl.getBoolInput("RunIndividualTestCase", false);
-                console.log("Testing this if it works.");
-                if (RunIndividualTC == true) {
-                    RunIndividualTestCase(TestCaseName, TestcasePath);
-                    console.log("Selected to run individual test case");
-                }
-                else {
-                    console.log("selected to run all test cases");
-                    RunAllTestCases(TestcasePath);
-                }
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            //Getting inputs from the users
+            const TestcasePath = tl.getInput("testpath", true);
+            const username = tl.getInput("username", true);
+            const password = tl.getInput("password", true);
+            yield publishTR(username, password);
+            yield publishadd(username, password);
+            yield publishupdate(username, password);
+            if (TestcasePath == 'bad') {
+                tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
+                return;
             }
-            catch (err) {
-                tl.setResult(tl.TaskResult.Failed, err.message);
+            const TestCaseName = tl.getInput("TestcaseName", false);
+            const RunIndividualTC = tl.getBoolInput("RunIndividualTestCase", false);
+            console.log("Testing this if it works.");
+            if (RunIndividualTC == true) {
+                RunIndividualTestCase(TestCaseName, TestcasePath);
+                console.log("Selected to run individual test case");
             }
-            return [2 /*return*/];
-        });
-    });
-}
-run();
-function RunAllTestCases(TestPath) {
-    console.log("Running all test cases in path " + TestPath);
-    var exec = require('child_process').exec;
-    exec('robot' + ' --pythonpath ' + ' ' + TestPath, function (error, stdout, stderr) {
-        if (error) {
-            console.error("Error: " + stderr);
-            tl.setResult(tl.TaskResult.Failed, error);
-            return;
+            else {
+                console.log("selected to run all test cases");
+                RunAllTestCases(TestcasePath);
+            }
+            //var link : string; 
+        }
+        catch (err) {
+            tl.setResult(tl.TaskResult.Failed, err.message);
         }
     });
 }
-function RunIndividualTestCase(TestCaseName, TestPath) {
-    console.log("Run Individual Test Cases" + ' ' + TestCaseName);
-    var exec = require('child_process').exec;
-    exec('robot -t' + ' ' + TestCaseName + ' ' + TestPath, function (error, stdout, stderr) {
+var link;
+var link1;
+//var dash: string;
+//var sliced: string;
+run();
+function RunAllTestCases(TestPath) {
+    console.log("Running all test cases in path " + TestPath);
+    const { exec } = require('child_process');
+    exec('robot --pythonpath .' + ' ' + '-x outputxunit.xml' + ' ' + TestPath, (error, stdout, stderr) => {
         /*if(error) {
           console.error(`Error: ${stderr}`);
           tl.setResult(tl.TaskResult.Failed,error);
           return;
-        }*/
+        }
+        /*console.log(dash);
+    sliced = JSON.parse(JSON.stringify(dash)).output; TestPath
+            console.log(sliced);
+      console.log(`${stdout}`);
+        console.log(`${stdout}`);*/
+    });
+}
+function RunIndividualTestCase(TestCaseName, TestPath) {
+    console.log("Run Individual Test Cases" + ' ' + TestCaseName);
+    const { exec } = require('child_process');
+    exec('robot -t' + ' ' + TestCaseName + ' ' + TestPath, (error, stdout, stderr) => {
+        /*if(error) {
+          console.error(`Error: ${stderr}`);
+          tl.setResult(tl.TaskResult.Failed,error);
+          return;P
+        }
+        console.log(dash);
+      sliced = JSON.parse(JSON.stringify(dash)).output;
+              console.log(sliced);TestPath
+        console.log(`${stdout}`);
+          console.log(`${stdout}`);*/
+    });
+}
+function publishTR(username, password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("calling REST api to create new test run");
+        return new Promise((resolve, reject) => {
+            var url = "https://dev.azure.com/sivadeep1791/BotFrameworkTest/_apis/test/runs?api-version=5.0";
+            var request = require("request");
+            request.get({ url
+            }, function (error, response, body) {
+                resolve(body);
+                console.log(body);
+                link1 = JSON.parse(body).value[0].id;
+                console.log(link1);
+                /*link2 = body.value[0].id;
+                link3 = JSON.parse(JSON.stringify(body)).id;
+                link4 = body.value[0].count.id;
+                link5 = JSON.parse(body).count.id;
+                console.log(link1);
+                console.log(link2);
+                console.log(link3);
+                console.log(link4);
+                console.log(link5);*/
+            }).auth(username, password, true);
+        });
+    });
+}
+function publishadd(username, password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("calling REST api to add test results to a test run");
+        return new Promise((resolve, reject) => {
+            var url = "https://dev.azure.com/sivadeep1791/BotFrameworkTest/_apis/test/Runs/" + link1 + "/results?api-version=5.0";
+            var request = require("request");
+            request.get({ url
+            }, function (error, response, body) {
+                //resolve(body);
+                console.log(body);
+                //const link = JSON.parse(body).id;
+                //console.log(link);
+                //console.log("end of call api ");
+            }).auth(username, password, true);
+        });
+    });
+}
+function publishupdate(username, password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("calling REST api to update test results to a test run");
+        return new Promise((resolve, reject) => {
+            var url = "https://dev.azure.com/sivadeep1791/BotFrameworkTest/_apis/test/runs/" + link1 + "?api-version=5.0";
+            var request = require("request");
+            request.get({ url
+            }, function (error, response, body) {
+                //resolve(body);
+                console.log(body);
+                //const link = JSON.parse(body).id;
+                //console.log(link);
+                //console.log("end of call api ");
+            }).auth(username, password, true);
+        });
     });
 }
